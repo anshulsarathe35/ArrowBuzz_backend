@@ -49,9 +49,9 @@ const generateToken = (id) => {
 
 //anshul - with multer 
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, phoneNo } = req.body;
 
-  if (!name || !email || !password) {
+  if (!name || !email || !password || !phoneNo) {
     res.status(400);
     throw new Error("Please fill in all required fields");
   }
@@ -75,6 +75,7 @@ const registerUser = asyncHandler(async (req, res) => {
     email,
     password,
     photo,
+    phoneNo
   });
 
   const token = generateToken(user._id);
@@ -88,8 +89,8 @@ const registerUser = asyncHandler(async (req, res) => {
   });
 
   if (user) {
-    const { _id, name, email, photo, role } = user;
-    res.status(201).json({ _id, name, email, photo, token, role });
+    const { _id, name, email, photo, role,phoneNo } = user;
+    res.status(201).json({ _id, name, email, photo, token, role,phoneNo });
   } else {
     res.status(400);
     throw new Error("Invalid user data");
@@ -168,7 +169,7 @@ const getparticularuser = asyncHandler(async (req, res) => {
     if (!particularUser) {
       return res.status(404).json({ message: "User not found" });
     }
-
+    
     res.status(200).json(particularUser);
   } catch (error) {
     res.status(500).json({ message: "Failed to fetch user details", error });

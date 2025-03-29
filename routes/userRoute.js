@@ -50,7 +50,8 @@ router.get("/estimate-income", protect, isAdmin, estimateIncome);
 router.get("/allusers", getAllUser);
 
 //raj only for admin get user with id
-router.get("/get-particularuser/:id",protect,getparticularuser);
+// router.get("/get-particularuser/:id",protect,getparticularuser);
+router.get("/get-particularuser/:id",getparticularuser);
 
 //raj
 router.put("/updateprofile/:id",protect,updateprofile);

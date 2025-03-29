@@ -10,6 +10,7 @@ const userRoute = require("./routes/userRoute");
 const serviceRoute = require("./routes/serviceRoute");
 const biddingRoute = require("./routes/biddingRoute");
 const categoryRoute = require("./routes/categoryRoute");
+// const contactUsRoute = require("./routes/contactUsRoute")
 const errorHandler = require("./middleWare/errorMiddleWare");
 const User = require("./model/userModel");
 
@@ -40,6 +41,9 @@ app.use("/api/users", userRoute);
 app.use("/api/service", serviceRoute);
 app.use("/api/bidding", biddingRoute);
 app.use("/api/category", categoryRoute);
+
+//just for contact us page
+// app.use("/api/contactus", contactUsRoute)
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
