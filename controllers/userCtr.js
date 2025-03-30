@@ -177,8 +177,29 @@ const getparticularuser = asyncHandler(async (req, res) => {
 });
 
 //raj update profile
-const updateprofile = asyncHandler(async(req,res)=>{
-  const { name, phoneNo, email, photo } = req.body;
+// const updateprofile = asyncHandler(async(req,res)=>{
+//   const { name, phoneNo, email, photo } = req.body;
+
+//   const user = await User.findById(req.user.id);
+//   if (!user) {
+//     res.status(404);
+//     throw new Error("User not found");
+//   }
+
+  
+//   user.name = name || user.name;
+//   user.phoneNo = phoneNo || user.phoneNo;
+//   user.email = email || user.email;
+//   user.photo = photo || user.photo;
+
+//   const updatedUser = await user.save();
+//   res.status(200).json(updatedUser);
+// });
+
+
+//anshul new corrected route
+const updateprofile = asyncHandler(async (req, res) => {
+  const { name, phoneNo, email } = req.body;
 
   const user = await User.findById(req.user.id);
   if (!user) {
@@ -186,11 +207,13 @@ const updateprofile = asyncHandler(async(req,res)=>{
     throw new Error("User not found");
   }
 
-  
   user.name = name || user.name;
   user.phoneNo = phoneNo || user.phoneNo;
   user.email = email || user.email;
-  user.photo = photo || user.photo;
+
+  if (req.file) {
+    user.photo = `/uploads/${req.file.filename}`;
+  }
 
   const updatedUser = await user.save();
   res.status(200).json(updatedUser);

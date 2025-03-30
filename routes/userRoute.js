@@ -54,6 +54,8 @@ router.get("/allusers", getAllUser);
 router.get("/get-particularuser/:id",getparticularuser);
 
 //raj
-router.put("/updateprofile/:id",protect,updateprofile);
+// router.put("/updateprofile/:id",protect,updateprofile);
 
+//anshul
+router.put("/updateprofile", protect, upload.single("photo"), updateprofile);
 module.exports = router;

@@ -186,6 +186,99 @@ const sendEmail = require("../utils/sendEmail");
 // });
 
 
+// const createService = asyncHandler(async (req, res) => {
+//   const {
+//     title,
+//     description,
+//     price,
+//     category,
+//     auctionDays,
+//     auctionHours,
+//     auctionMinutes,
+//     userName,
+//   } = req.body;
+
+//   const userId = req.user.id;
+
+//   if (!title || !description || !price || !userName) {
+//     res.status(400);
+//     throw new Error("Please fill in all fields.");
+//   }
+
+//   if (isNaN(price) || price <= 0) {
+//     res.status(400);
+//     throw new Error("Price must be a valid positive number.");
+//   }
+
+//   const originalSlug = slugify(title, {
+//     lower: true,
+//     remove: /[*+~.()'"!:@]/g,
+//     strict: true,
+//   });
+
+//   let slug = originalSlug;
+//   let suffix = 1;
+
+//   while (await Service.findOne({ slug })) {
+//     slug = `${originalSlug}-${suffix}`;
+//     suffix++;
+//   }
+
+//   let fileData = {};
+//   if (req.file) {
+//     fileData = {
+//       fileName: req.file.originalname,
+//       filePath: req.file.path.replace(/\\/g, "/"),
+//       fileType: req.file.mimetype,
+//     };
+//   }
+
+//   try {
+//     const service = await Service.create({
+//       user: userId,
+//       title,
+//       slug,
+//       description,
+//       price: parseFloat(price),
+//       category,
+//       userName,
+//       auctionDays: auctionDays || 0,
+//       auctionHours: auctionHours || 0,
+//       auctionMinutes: auctionMinutes || 0,
+//       image: fileData,
+//     });
+
+//     // const message = `
+//     // Hello ${userName},\n\n
+//     // Your service "${title}" has been successfully posted on our platform.\n
+//     // Category: ${category}\n
+//     // Starting Price: ₹${price}\n
+//     // Auction Duration: ${auctionDays} Days, ${auctionHours} Hours, ${auctionMinutes} Minutes\n\n
+//     // You will be notified about bids and updates. Thank you for using our platform!
+//     // `;
+
+//     // await sendEmail({
+//     //   email: req.user.email, 
+//     //   subject: "Service Posted Successfully!",
+//     //   message,
+//     // });
+
+//     console.log(req.user.email)
+
+//     res.status(201).json({
+//       success: true,
+//       data: service,
+//     });
+//   } catch (error) {
+//     console.error("Error creating service:", error.message);
+//     res.status(500);
+//     throw new Error("Service creation failed.");
+//   }
+// });
+
+
+
+//anshul added with new gmail smtp
 const createService = asyncHandler(async (req, res) => {
   const {
     title,
@@ -239,7 +332,7 @@ const createService = asyncHandler(async (req, res) => {
       title,
       slug,
       description,
-      price: parseFloat(price),
+      price,
       category,
       userName,
       auctionDays: auctionDays || 0,
@@ -248,6 +341,7 @@ const createService = asyncHandler(async (req, res) => {
       image: fileData,
     });
 
+    // ✅ Send an email notification after creating the service
     // const message = `
     // Hello ${userName},\n\n
     // Your service "${title}" has been successfully posted on our platform.\n
@@ -257,27 +351,54 @@ const createService = asyncHandler(async (req, res) => {
     // You will be notified about bids and updates. Thank you for using our platform!
     // `;
 
-    // await sendEmail({
-    //   email: req.user.email, 
-    //   subject: "Service Posted Successfully!",
-    //   message,
-    // });
+    const message = `
+    <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+      <div style="text-align: center; margin-bottom: 20px;">
+        <img src="https://i.imgur.com/wgPfPkP.jpeg" alt="Platform Logo" width="150" style="border-radius: 10px;">
+      </div>
+      <h2 style="color: #2c3e50;">Hello ${userName},</h2>
+      <p>Your service <strong>"${title}"</strong> has been successfully posted on our platform.</p>
 
-    console.log(req.user.email)
+      <div style="background-color: #f9f9f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+        <p><strong>Category:</strong> ${category}</p>
+        <p><strong>Starting Price:</strong> ₹${price}</p>
+        <p><strong>Auction Duration:</strong> ${auctionDays} Days, ${auctionHours} Hours, ${auctionMinutes} Minutes</p>
+      </div>
+
+      <p style="margin-top: 20px;">You will be notified about bids and updates. Thank you for using our platform!</p>
+
+      <div style="text-align: center; margin-top: 30px;">
+        <a href="" 
+           style="padding: 10px 20px; background-color: #3498db; color: #fff; text-decoration: none; border-radius: 5px; font-size: 14px;">
+           View Your Services
+        </a>
+      </div>
+
+      <footer style="margin-top: 20px; text-align: center; font-size: 12px; color: #999;">
+        © ${new Date().getFullYear()} Your Platform Name. All rights reserved.
+      </footer>
+    </div>
+  `;
+
+
+    await sendEmail({
+      email: req.user.email,
+      subject: "Service Posted Successfully!",
+      message,
+    });
+
+    console.log(` Email sent to ${req.user.email}`);
 
     res.status(201).json({
       success: true,
       data: service,
     });
   } catch (error) {
-    console.error("Error creating service:", error.message);
+    console.error(" Error creating service:", error.message);
     res.status(500);
     throw new Error("Service creation failed.");
   }
 });
-
-
-
 
 
 
