@@ -51,7 +51,8 @@ const sendEmail = async (options) => {
     from: `${process.env.SMPT_FROM_NAME} <${process.env.SMPT_FROM_EMAIL}>`,
     to: options.email,
     subject: options.subject,
-    html: options.message,
+    html: options.html || options.message,
+
   };
 
   transport.verify((error, success) => {
