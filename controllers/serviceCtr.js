@@ -375,7 +375,7 @@ const createService = asyncHandler(async (req, res) => {
       </div>
 
       <footer style="margin-top: 20px; text-align: center; font-size: 12px; color: #999;">
-        © ${new Date().getFullYear()} Your Platform Name. All rights reserved.
+        © ${new Date().getFullYear()} ArrowBuzz Services. All rights reserved.
       </footer>
     </div>
   `;

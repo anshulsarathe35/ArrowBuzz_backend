@@ -13,6 +13,8 @@ const categoryRoute = require("./routes/categoryRoute");
 // const contactUsRoute = require("./routes/contactUsRoute")
 const errorHandler = require("./middleWare/errorMiddleWare");
 const User = require("./model/userModel");
+const Contact = require("./model/contactUsModel")
+const contactRouter = require("./routes/contactUsRoute");
 
 const app = express();
 
@@ -46,6 +48,9 @@ app.use("/api/category", categoryRoute);
 // app.use("/api/contactus", contactUsRoute)
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+//contact us route
+app.use("/api/contact", contactRouter);
 
 // Erro Middleware
 app.use(errorHandler);
